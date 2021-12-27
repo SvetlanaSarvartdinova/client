@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ISSPECS>
+  <DESCRIPTION>
+    <TITLE>Трекер сериалов</TITLE>
+    <SUBJ>Каталог разнообразных сериалов по вкусу, с возможностью фильтрации по стране и жанру. Понравившиеся сериалы можно добавить в списки "Просмотренное" или "Хочу посмотреть" и присоединится к обсуждению на странице сериала</SUBJ>
+  </DESCRIPTION>
+  <DATA>
+    <ENTITY ent_id="users">
+      <PROPERTY>user_id uuid</PROPERTY>
+      <PROPERTY>username varchar(50)</PROPERTY>
+      <PROPERTY>password varchar(255)</PROPERTY>
+      <PROPERTY>email varchar(100)</PROPERTY>
+      <PROPERTY>is_superuser bool</PROPERTY>
+    </ENTITY>
+    <ENTITY ent_id="genres">
+      <PROPERTY>genre_id integer</PROPERTY>
+      <PROPERTY>genre_name varchar(50)</PROPERTY>
+    </ENTITY>
+    <ENTITY ent_id="countries">
+      <PROPERTY>country_id integer</PROPERTY>
+      <PROPERTY>country_name varchar(50)</PROPERTY>
+    </ENTITY>
+    <ENTITY ent_id="serials">
+      <PROPERTY>serial_id integer</PROPERTY>
+      <PROPERTY>name varchar(100)</PROPERTY>
+      <PROPERTY>description text</PROPERTY>
+      <PROPERTY>content varchar(255)</PROPERTY>
+      <PROPERTY>genre_id integer</PROPERTY>
+      <PROPERTY>status varchar(50)</PROPERTY>
+      <PROPERTY>number_of_seasons integer</PROPERTY>
+      <PROPERTY>number_of_episodes integer</PROPERTY>
+      <PROPERTY>duration_of_episode integer</PROPERTY>
+      <PROPERTY>country_id integer</PROPERTY>
+      <PROPERTY>rating_imdb numeric(3, 1)</PROPERTY>
+      <PROPERTY>release_year integer</PROPERTY>
+      <PROPERTY>main_actors varchar(255)</PROPERTY>
+      <PROPERTY>resource_url text</PROPERTY>
+    </ENTITY>
+    <ENTITY ent_id="reviews">
+      <PROPERTY>review_id integer</PROPERTY>
+      <PROPERTY>serial_id integer</PROPERTY>
+      <PROPERTY>user_id uuid</PROPERTY>
+      <PROPERTY>text_rew text</PROPERTY>
+      <PROPERTY>rating integer</PROPERTY>
+    </ENTITY>
+     <ENTITY ent_id="user_lists">
+      <PROPERTY>user_id uuid</PROPERTY>
+      <PROPERTY>serial_id integer</PROPERTY>
+      <PROPERTY>is_viewed bool</PROPERTY>
+    </ENTITY>
+    <RELATIONSHIP ent_ids="genres serials">
+      <PROPERTY>genre_id foreign key</PROPERTY>
+    </RELATIONSHIP>
+    <RELATIONSHIP ent_ids="countries serials">
+      <PROPERTY>country_id foreign key</PROPERTY>
+    </RELATIONSHIP>
+    <RELATIONSHIP ent_ids="serials reviews">
+      <PROPERTY>serial_id foreign key</PROPERTY>
+    </RELATIONSHIP>
+    <RELATIONSHIP ent_ids="users reviews">
+      <PROPERTY>user_id foreign key</PROPERTY>
+    </RELATIONSHIP>
+    <RELATIONSHIP ent_ids="serials user_lists">
+      <PROPERTY>serial_id foreign key</PROPERTY>
+    </RELATIONSHIP>
+    <RELATIONSHIP ent_ids="users user_lists">
+      <PROPERTY>user_id foreign key</PROPERTY>
+    </RELATIONSHIP>
+    <CONSTRAINT>Все поля не должны быть равны NULL</CONSTRAINT>
+    <CONSTRAINT>Значения в поле email таблицы users должны быть уникальны</CONSTRAINT>
+    <CONSTRAINT>В таблице users password - закодированный пароль</CONSTRAINT>
+    <CONSTRAINT>В таблице user_lists пара (user_id, serial_id) - primary key</CONSTRAINT>
+    <CONSTRAINT>Элементы, на которые ссылаются другие таблицы, должны существовать</CONSTRAINT> 
+  </DATA>
+  <ROLES>
+    <ROLE>
+      <TITLE>Незарегистрированный пользователь</TITLE>
+      <RESPONSOBILITY>Просмотр каталога сериалов</RESPONSOBILITY>
+      <RESPONSOBILITY>Фильтрация сериалов по жанру и/или стране</RESPONSOBILITY>
+      <RESPONSOBILITY>Просмотр комментариев к сериалу</RESPONSOBILITY>
+      <TOTALUSERS>Неограниченно</TOTALUSERS>
+    </ROLE>
+    <ROLE>
+      <TITLE>Зарегистрированный пользователь</TITLE>
+      <RESPONSOBILITY>Просмотр каталога сериалов</RESPONSOBILITY>
+      <RESPONSOBILITY>Фильтрация сериалов по жанру и/или стране</RESPONSOBILITY>
+      <RESPONSOBILITY>Просмотр комментариев к сериалу</RESPONSOBILITY>
+      <RESPONSOBILITY>Добавление сериала в один из списков "Посмотрел" и "Хочу посмотреть"</RESPONSOBILITY>
+      <RESPONSOBILITY>Добавление комментариев к сериалу</RESPONSOBILITY>
+      <TOTALUSERS>Неограниченно</TOTALUSERS>
+    </ROLE>
+    <ROLE>
+      <TITLE>Администратор</TITLE>
+      <RESPONSOBILITY>Просмотр каталога сериалов</RESPONSOBILITY>
+      <RESPONSOBILITY>Фильтрация сериалов по жанру и/или стране</RESPONSOBILITY>
+      <RESPONSOBILITY>Просмотр комментариев к сериалу</RESPONSOBILITY>
+      <RESPONSOBILITY>Добавление сериала в один из списков "Посмотрел" и "Хочу посмотреть"</RESPONSOBILITY>
+      <RESPONSOBILITY>Добавление комментариев к сериалу</RESPONSOBILITY>
+      <RESPONSOBILITY>Добавление в категорию "Жанры"</RESPONSOBILITY>
+      <RESPONSOBILITY>Добавление в категорию "Страны"</RESPONSOBILITY>
+      <RESPONSOBILITY>Создание сериала</RESPONSOBILITY>
+      <RESPONSOBILITY>Обновление информации о сериале</RESPONSOBILITY>
+      <RESPONSOBILITY>Редактирование комментариев</RESPONSOBILITY>
+      <RESPONSOBILITY>Удаление комментариев</RESPONSOBILITY>
+      <RESPONSOBILITY>Добавление администратора из числа зарегистрированных пользователей</RESPONSOBILITY>
+      <TOTALUSERS>Неограниченно</TOTALUSERS>
+    </ROLE>
+  </ROLES>
+  <TECHSPEC>
+    <TYPE>Веб-приложение</TYPE>
+    <DEVTOOLS>
+      <DEV>React</DEV>
+      <DEV>MUI</DEV>
+      <DEV>Node.js</DEV>
+      <DEV>Express</DEV>
+    </DEVTOOLS>
+    <DMBS>
+      <TITLE>PostgreSQL</TITLE>
+      <VERSION>13.0</VERSION>
+      <REASONING>Обеспечение целостности данных благодаря первичным и каскадным внешним ключам, NOT NULL ограничениям и т.д.></REASONING>
+    </DMBS>
+  </TECHSPEC>
+</ISSPECS>
